@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import datetime
 
 class scraper():
 
-    def __init__(self, keyword: str, limit=10):
+    def __init__(self, keyword: str, limit=10, time_=1):
+        self.time_=time_
         self.url = "https://news.google.com/search?q={0}&hl=en-IN&gl=IN&ceid=IN:en"
         self.query = self.url.format("%".join(keyword.split()))
         self.request_news = requests.get(self.query)
@@ -24,9 +26,15 @@ class scraper():
             if a_tag:
                 l = a_tag[0]['href']
                 title = link.find('h3').text
+                time_value = link.find('time')["datetime"]
+                now = datetime.datetime.now()
+                time = datetime.datetime.strptime(time_value, '%Y-%m-%dT%H:%M:%SZ')
+                if (now-time).days>self.time_:
+                    continue
                 item = {
                     "title": title,
-                    "link": "https://news.google.com/"+l
+                    "link": "https://news.google.com/"+l,
+                    "time": time_value
                 }
                 self.results.append(item)
 
