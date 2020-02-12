@@ -18,7 +18,7 @@ class Sentiment:
         self.negative_cleaned_tokens_list = []
         self.positive_tweets_tokens = twitter_samples.tokenized('positive_tweets.json')
         self.negative_tweets_tokens = twitter_samples.tokenized('negative_tweets.json')
-    
+
     
     def remove_noise(self, token_):
         cleaned_tokens = []
@@ -83,6 +83,7 @@ class Sentiment:
         joblib.dump(classifier, 'model.pkl') # Saved model file
         return classifier 
 
+Sentiment().train_data()
     
 
 

@@ -16,3 +16,5 @@ class Classify:
     def classify(self):
         result = f.classify(dict([token, True] for token in self.news_token))
         return result
+
+print(Classify("Very good Ritik").classify())
