@@ -83,10 +83,6 @@ class Sentiment:
         joblib.dump(classifier, 'model.pkl') # Saved model file
         return classifier 
 
-Sentiment().train_data()
-    
-
-
 
 
 
