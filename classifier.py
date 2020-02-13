@@ -3,6 +3,7 @@ from sklearn.externals import joblib
 from nltk import classify
 from nltk.tokenize import word_tokenize
 
+
 f = joblib.load('model.pkl')
 
 class Classify:
