@@ -2,3 +2,5 @@ bs4
 requests
 nltk
 sklearn
+flask
+flask-cors
