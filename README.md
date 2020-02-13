@@ -14,3 +14,6 @@ Non-functional (Qualitative) Requirements of Solution
 1. The user interface should be intuitive and easy to use. 
 2. Response communication should be in real-time. 
 3. The system should be flexible to tune and use multiple algorithms for comparison of results 
+
+### Installation instructions
+After installing dependencies from <b>requirements.txt</b> run the download.py file using <b>python download.py</b>
