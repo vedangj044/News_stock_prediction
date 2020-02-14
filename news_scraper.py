@@ -48,3 +48,4 @@ class scraper():
 if __name__ == "__main__":
     sc = scraper("Tesla Stocks")
     sc.pretty_print()
+
