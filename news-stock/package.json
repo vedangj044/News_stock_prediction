@@ -10,6 +10,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "aos": "^2.3.4",
+    "axios": "^0.19.2",
+    "easy-scroll": "^0.6.0",
     "history": "^4.10.1",
     "markdown-to-jsx": "^6.11.0",
     "react": "^16.12.0",
@@ -21,7 +23,10 @@
     "react-scripts": "3.3.1",
     "recharts": "^2.0.0-beta.1",
     "typeface-varela": "^0.0.72",
-    "universal-cookie": "^4.0.3"
+    "universal-cookie": "^4.0.3",
+    "vega": "^5.9.1",
+    "vega-embed": "^6.2.2",
+    "vega-lite": "^4.3.1"
   },
   "scripts": {
     "start": "react-scripts start",

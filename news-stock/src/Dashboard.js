@@ -32,12 +32,26 @@ import Cookies from "universal-cookie";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import PropTypes from "prop-types";
+import vegaEmbed from "vega-embed";
+
+
+var port="192.168.43.48:5000/";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  fetch(`${port}map`)
+        .then(res => res.json())
+        .then(
+          vegaEmbed("#view", `${port}map`, {
+            height: 300,
+            width: 600
+          })
+        )
+        .catch(err => console.error(err));
 
   return (
     <div
@@ -49,8 +63,7 @@ function TabPanel(props) {
       {...other}
     >
       {/* {value === index && <Box p={3}>{children}</Box>} */}
-      <main className={classes.content}>
-      <div className={classes.appBarSpacer} />
+      <main className={classes.content} style={{backgroundColor: "#f8f8f8"}}>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           {/* Chart */}
@@ -72,9 +85,7 @@ function TabPanel(props) {
             </Paper>
           </Grid>
         </Grid>
-        <Box pt={4}>
-          <Copyright />
-        </Box>
+        
       </Container>
     </main>
     </div>
@@ -142,18 +153,7 @@ function ScrollableTabsButtonAuto() {
   );
 }
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+
 
 const drawerWidth = 240;
 
@@ -222,7 +222,7 @@ const useStyles = makeStyles(theme => ({
     overflow: "auto"
   },
   container: {
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(4)
   },
   paper: {
@@ -384,10 +384,11 @@ export default function Dashboard() {
           </IconButton>
           <Typography
             component="h1"
-            variant="h6"
+            variant="h4"
             color="inherit"
             noWrap
             className={classes.title}
+            style={{fontFamily: "varela round"}}
           >
             Famulus
           </Typography>
@@ -432,11 +433,11 @@ export default function Dashboard() {
       </Popover> */}
 
           <div className={classes.grow} />
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
         <ScrollableTabsButtonAuto />
       </AppBar>
@@ -454,7 +455,7 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        {/* <List>{mainListItems}</List> */}
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>

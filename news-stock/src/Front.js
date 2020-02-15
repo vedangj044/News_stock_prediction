@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -30,6 +30,7 @@ import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import Cookies from 'universal-cookie';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 function Copyright() {
   return (
@@ -96,6 +97,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Front() {
+  var port="192.168.43.48:5000/";
   const cookies = new Cookies();
   const classes = useStyles();
 
@@ -107,15 +109,26 @@ export default function Front() {
     history.push(path);
   }
 
+ const [news, setNews] = useState([]);
+
   const handleDeleteChip = event => {
     var index = comp.indexOf(event.target.value);
     comp.splice(index, 1);
     setComp(comp);
+    fetch(`${port}news`, {
+      'methods' : 'Post',
+      'query' : comp  
+    })
+    .then(res => res.json())
+    .then(res => setNews(res))
+    .catch(err => console.error(err));
   };
 
   const handleClick = () => {
     console.info("You clicked the Chip.");
   };
+
+
 
   const handleEnter = event => {
     if (event.key === "Enter") {
@@ -123,8 +136,17 @@ export default function Front() {
       if (compadd!=="" && comp.indexOf(compadd)==-1)
       {
       setComp([...comp, compadd]);
+      console.log("WIIOSFUI")
+        var params = {
+          query : comp
+        }
+        event.preventDefault();
+         axios.post('http://192.168.43.48:5000/news', params)
+         .then(res => res.json())
+         .then(res => console.log(res))
+         .catch(err => console.log(err))
+      
       }
-      event.preventDefault();
     }
   };
 
@@ -133,11 +155,21 @@ export default function Front() {
     setComp([...comp, compadd]);
   };
 
-  const loading = false;
+  const [loading, setLoad] = useState(true);
 
   const [comp, setComp] = useState(["Tesla", "Tata"]);
 
   const [compgrow, setCompgrow] = useState(false);
+
+  const [comparr, setComparr] = useState([
+    { price: true, day:"tuesday"},
+    { price: false, day:"mon  day"}
+  ]);
+
+  useEffect(() => {
+    console.log(comp)
+  });
+
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -215,15 +247,18 @@ export default function Front() {
             ))}
           </form>
         </div>
-        {/* <Grid container>
+        {(loading)?
+        (
+        <Grid container>
           <Box width={500}>
             <Skeleton variant="rect" width={600} height={400} />
             <Box pt={0.5}>
               <Skeleton />
             </Box>
           </Box>
-        </Grid> */}
-        <Paper style={{ padding: "30px", width: "600px" }}>
+        </Grid>
+        ):
+        (<Paper style={{ padding: "30px", width: "600px" }}>
           <Grid container spacing="8">
             <Grid item>
               <Typography variant="h3" style={{ color: "grey" }}>
@@ -266,7 +301,7 @@ export default function Front() {
             The stock is expected to <span style={{borderBottom:"7px solid #cc3232", fontFamily:"varela round", padding:"1px", color:"black",
           borderRadius:"3px"}}>Fall</span>
             </Typography> */}
-        </Paper>
+        </Paper>)}
         <center>
           <Button
             variant="contained"
