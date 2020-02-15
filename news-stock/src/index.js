@@ -6,13 +6,13 @@ import * as serviceWorker from './serviceWorker';
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router";
 import Front from "./Front.js";
-import SearchRes from "./SearchRes.js";
+import Dashboard from "./Dashboard.js";
 
 var hist = createBrowserHistory();
 
 ReactDOM.render(<Router history={hist}>
     <Switch>
-      <Route path="/Search" component={SearchRes} />
+      <Route path="/Dashboard" component={Dashboard} />
       <Route path="/" component={Front} />
     </Switch>
   </Router>,
