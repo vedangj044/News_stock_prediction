@@ -7,6 +7,7 @@ class scraper():
 
     def __init__(self, keyword: str, limit=10, time_=1):
         self.time_=time_
+        self.count=0
         self.url = "https://news.google.com/search?q={0}&hl=en-IN&gl=IN&ceid=IN:en"
         self.query = self.url.format("%".join(keyword.split()))
         self.request_news = requests.get(self.query)
@@ -29,6 +30,8 @@ class scraper():
                 time_value = link.find('time')["datetime"]
                 now = datetime.datetime.now()
                 time = datetime.datetime.strptime(time_value, '%Y-%m-%dT%H:%M:%SZ')
+                if self.count==10:
+                    break
                 if (now-time).days>self.time_:
                     continue
                 item = {
@@ -37,6 +40,7 @@ class scraper():
                     "time": time_value
                 }
                 self.results.append(item)
+            self.count+=1
 
     def pretty_print(self):
         data = json.dumps(self.results)
@@ -48,3 +52,4 @@ class scraper():
 if __name__ == "__main__":
     sc = scraper("Tesla Stocks")
     sc.pretty_print()
+

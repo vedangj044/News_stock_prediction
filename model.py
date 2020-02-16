@@ -3,10 +3,9 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tag import pos_tag 
 from nltk.tokenize import word_tokenize
 from nltk import NaiveBayesClassifier
-from sklearn.externals import joblib 
 import re, string 
 import random 
-
+import pickle
 
 class Sentiment:
     """
@@ -28,7 +27,7 @@ class Sentiment:
             Here regex removes the unwanted hyperlinks and username preceded by @
             '''
             token = re.sub('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+#]|[!*\(\),]|'\
-                        '(?:%[0-9a-fA-F][0-9a-fA-F]))+','', token)
+                       '(?:%[0-9a-fA-F][0-9a-fA-F]))+','', token)
             token = re.sub("(@[A-Za-z0-9_]+)","", token)
 
             if tag.startswith('NN'):
@@ -44,7 +43,7 @@ class Sentiment:
             if len(token)>0 and token not in string.punctuation and token.lower() not in self.stop_words:
                 cleaned_tokens.append(token.lower())
 
-            return cleaned_tokens
+        return cleaned_tokens
 
         
     def get_tweet_for_model(self, cleaned_tokens_list):
@@ -80,10 +79,11 @@ class Sentiment:
     def train_data(self):
         train_set = self.preprocess_data()[0]
         classifier = NaiveBayesClassifier.train(train_set)
-        joblib.dump(classifier, 'model.pkl') # Saved model file
+        f = open('my_classifier.pickle', 'wb')
+        pickle.dump(classifier, f)
         return classifier 
 
-
+Sentiment().train_data()
 
 
 
