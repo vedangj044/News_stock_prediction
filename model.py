@@ -27,7 +27,7 @@ class Sentiment:
             Here regex removes the unwanted hyperlinks and username preceded by @
             '''
             token = re.sub('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+#]|[!*\(\),]|'\
-                        '(?:%[0-9a-fA-F][0-9a-fA-F]))+','', token)
+                       '(?:%[0-9a-fA-F][0-9a-fA-F]))+','', token)
             token = re.sub("(@[A-Za-z0-9_]+)","", token)
 
             if tag.startswith('NN'):
@@ -79,7 +79,7 @@ class Sentiment:
     def train_data(self):
         train_set = self.preprocess_data()[0]
         classifier = NaiveBayesClassifier.train(train_set)
-        f = open('my_classifier', 'wb')
+        f = open('my_classifier.pickle', 'wb')
         pickle.dump(classifier, f)
         return classifier 
 

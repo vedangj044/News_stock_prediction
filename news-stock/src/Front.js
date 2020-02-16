@@ -101,12 +101,12 @@ export default function Front() {
   const cookies = new Cookies();
   const classes = useStyles();
 
-  let history = useHistory();
+  // let history = useHistory();
 
   const routeChange = () => {
     let path = `/Dashboard`;
     cookies.set('userId', comp, { path: '/' });
-    history.push(path);
+    // history.push(path);
   }
 
  const [news, setNews] = useState([]);
@@ -138,7 +138,7 @@ export default function Front() {
       setComp([...comp, compadd]);
       console.log("WIIOSFUI")
         var params = {
-          query : comp
+          query : 'tesla'
         }
         event.preventDefault();
          axios.post('http://192.168.43.48:5000/news', params)
@@ -155,11 +155,11 @@ export default function Front() {
     setComp([...comp, compadd]);
   };
 
-  const [loading, setLoad] = useState(true);
+  const [loading, setLoad] = useState(false);
 
-  const [comp, setComp] = useState(["Tesla", "Tata"]);
+  const [comp, setComp] = useState(["Tesla", "Wipro"]);
 
-  const [compgrow, setCompgrow] = useState(false);
+  const [compgrow, setCompgrow] = useState(true);
 
   const [comparr, setComparr] = useState([
     { price: true, day:"tuesday"},
@@ -279,7 +279,26 @@ export default function Front() {
           </Grid>
 
           <Typography variant="h6" color="textSecondary">
-            The stock is expected to {" "}
+            The stock for Tesla is expected to {" "}
+            {(compgrow)?
+            (<span
+              style={{
+                fontSize: "35px",
+                borderBottom: "7px solid #2dc937",
+                fontFamily: "varela round",
+                padding: "1px",
+                color: "black",
+                borderRadius: "3px"
+              }}
+            >
+              Rise
+            </span>)
+            :(<span style={{fontSize: "35px",borderBottom:"7px solid #cc3232", fontFamily:"varela round", padding:"1px", color:"black",
+            borderRadius:"3px"}}>Fall</span>)
+}           about <b>0.08%</b> by tommorow, <b>0.41%</b> by next 7 days, <b>0.84%</b> in the next 15 days, <b>2.16%</b> in the next 30 days.
+          </Typography>
+          <Typography variant="h6" color="textSecondary">
+            The stock for Wipro is expected to {" "}
             {(compgrow)?
             (<span
               style={{

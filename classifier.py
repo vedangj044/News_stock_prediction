@@ -2,6 +2,7 @@ from model import Sentiment
 from nltk import classify
 from nltk.tokenize import word_tokenize
 import pickle
+from nltk.probability import UniformProbDist as U
 
 model_file = open('my_classifier.pickle', 'rb')
 f = pickle.load(model_file)
@@ -15,6 +16,7 @@ class Classify:
         self.news_token = Sentiment().remove_noise(token_=news)
 
     def classify(self):
-        result = f.classify(dict([token, True] for token in self.news_token))
-        return result
+        m = f.prob_classify(dict([token, True] for token in self.news_token))
+        return m.prob("Positive")
 
+print(Classify("Rocket boost in Tesla stocks").classify())
