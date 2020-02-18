@@ -1,35 +1,23 @@
 import React, { useState , useEffect} from "react";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import frontimg from "./img/front.jpg";
 import Container from "@material-ui/core/Container";
 import Chip from "@material-ui/core/Chip";
-import DoneIcon from "@material-ui/icons/Done";
 import frontimg1 from "./img/front1.jpg";
 import Zoom from "react-reveal/Zoom";
 import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import DirectionsIcon from "@material-ui/icons/Directions";
 import Skeleton from "@material-ui/lab/Skeleton";
-import EqualizerIcon from "@material-ui/icons/Equalizer";
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import Cookies from 'universal-cookie';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 function Copyright() {
@@ -200,18 +188,7 @@ export default function Front() {
       <Container maxWidth="sm" style={{ height: "100%" }}>
         <div className={classes.paper}>
           <form className={classes.form} noValidate>
-            {/* <TextField
-              
-              margin="normal"
-              required
-              fullWidth
-              id="company"
-              label="Company"
-              name="company"
-              autoComplete="company"
-              autoFocus
-            /> */}
-
+           
             <Paper
               component="form"
               className={classes.tfield}
@@ -316,87 +293,11 @@ export default function Front() {
             borderRadius:"3px"}}>Fall</span>)
 }
           </Typography>
-          {/* <Typography variant="h6" align="left" color="textSecondary">
-            The stock is expected to <span style={{borderBottom:"7px solid #cc3232", fontFamily:"varela round", padding:"1px", color:"black",
-          borderRadius:"3px"}}>Fall</span>
-            </Typography> */}
+        
         </Paper>)}
-        <center>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            className={classes.button}
-            startIcon={<EqualizerIcon />}
-            style={{ margin: "40px" }}
-            onClick={routeChange}
-          >
-            Deep Analysis
-          </Button>
-        </center>
+        
       </Container>
-      {/* <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
-      </Grid> */}
+     
     </Grid>
   );
 }
