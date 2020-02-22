@@ -57,7 +57,7 @@ def sentiment_analyzer():
     Receives company name and send back json response ['Positive', 'Negative']
 
     '''
-    query = request.form['company']
+    query = request.form.get('company', 'tesla')
 
     l = []
     for i in [1, 7, 15, 30]:

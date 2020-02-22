@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
@@ -17,8 +17,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import Skeleton from "@material-ui/lab/Skeleton";
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import Cookies from 'universal-cookie';
-import axios from 'axios';
+import Cookies from "universal-cookie";
+import axios from "axios";
 
 function Copyright() {
   return (
@@ -85,7 +85,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Front() {
-  var port="192.168.43.48:5000/";
+  var port = "192.168.43.119:5000/";
   const cookies = new Cookies();
   const classes = useStyles();
 
@@ -93,47 +93,58 @@ export default function Front() {
 
   const routeChange = () => {
     let path = `/Dashboard`;
-    cookies.set('userId', comp, { path: '/' });
+    cookies.set("userId", comp, { path: "/" });
     // history.push(path);
-  }
+  };
 
- const [news, setNews] = useState([]);
+  const [news, setNews] = useState([]);
 
   const handleDeleteChip = event => {
     var index = comp.indexOf(event.target.value);
     comp.splice(index, 1);
     setComp(comp);
     fetch(`${port}news`, {
-      'methods' : 'Post',
-      'query' : comp  
+      methods: "Post",
+      query: comp
     })
-    .then(res => res.json())
-    .then(res => setNews(res))
-    .catch(err => console.error(err));
+      .then(res => res.json())
+      .then(res => setNews(res))
+      .catch(err => console.error(err));
   };
 
   const handleClick = () => {
     console.info("You clicked the Chip.");
   };
 
-
-
   const handleEnter = event => {
     if (event.key === "Enter") {
       var compadd = event.target.value;
-      if (compadd!=="" && comp.indexOf(compadd)==-1)
-      {
-      setComp([...comp, compadd]);
-      console.log("WIIOSFUI")
-        var params = {
-          query : 'tesla'
-        }
+      if (compadd !== "" && comp.indexOf(compadd) == -1) {
+        setComp([...comp, compadd]);
+        console.log("WIIOSFUI");
+        const params = {
+          query: "tesla"
+        };
         event.preventDefault();
-         axios.post('http://192.168.43.48:5000/news', params)
-         .then(res => res.json())
-         .then(res => console.log(res))
-         .catch(err => console.log(err))
-      
+        axios
+          .post(
+            "http://192.168.43.119:5000/news",
+            {
+              query: "tesla"
+            },
+            {
+              headers: {
+                "Content-Type":
+                  "application/x-www-form-urlencoded; charset=UTF-8"
+              }
+            }
+          )
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
       }
     }
   };
@@ -150,14 +161,13 @@ export default function Front() {
   const [compgrow, setCompgrow] = useState(true);
 
   const [comparr, setComparr] = useState([
-    { price: true, day:"tuesday"},
-    { price: false, day:"mon  day"}
+    { price: true, day: "tuesday" },
+    { price: false, day: "mon  day" }
   ]);
 
   useEffect(() => {
-    console.log(comp)
+    console.log(comp);
   });
-
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -188,7 +198,6 @@ export default function Front() {
       <Container maxWidth="sm" style={{ height: "100%" }}>
         <div className={classes.paper}>
           <form className={classes.form} noValidate>
-           
             <Paper
               component="form"
               className={classes.tfield}
@@ -224,80 +233,102 @@ export default function Front() {
             ))}
           </form>
         </div>
-        {(loading)?
-        (
-        <Grid container>
-          <Box width={500}>
-            <Skeleton variant="rect" width={600} height={400} />
-            <Box pt={0.5}>
-              <Skeleton />
+        {loading ? (
+          <Grid container>
+            <Box width={500}>
+              <Skeleton variant="rect" width={600} height={400} />
+              <Box pt={0.5}>
+                <Skeleton />
+              </Box>
             </Box>
-          </Box>
-        </Grid>
-        ):
-        (<Paper style={{ padding: "30px", width: "600px" }}>
-          <Grid container spacing="8">
-            <Grid item>
-              <Typography variant="h3" style={{ color: "grey" }}>
-                Stock Analysis
-              </Typography>
-            </Grid>
-            <Grid item>
-              {compgrow ? (
-                <TrendingUpIcon
-                  style={{ fontSize: "60px", color: "#2dc937" }}
-                />
-              ) : (
-                <TrendingDownIcon
-                  style={{ fontSize: "60px", color: "#cc3232" }}
-                />
-              )}
-            </Grid>
           </Grid>
+        ) : (
+          <Paper style={{ padding: "30px", width: "600px" }}>
+            <Grid container spacing="8">
+              <Grid item>
+                <Typography variant="h3" style={{ color: "grey" }}>
+                  Stock Analysis
+                </Typography>
+              </Grid>
+              <Grid item>
+                {compgrow ? (
+                  <TrendingUpIcon
+                    style={{ fontSize: "60px", color: "#2dc937" }}
+                  />
+                ) : (
+                  <TrendingDownIcon
+                    style={{ fontSize: "60px", color: "#cc3232" }}
+                  />
+                )}
+              </Grid>
+            </Grid>
 
-          <Typography variant="h6" color="textSecondary">
-            The stock for Tesla is expected to {" "}
-            {(compgrow)?
-            (<span
-              style={{
-                fontSize: "35px",
-                borderBottom: "7px solid #2dc937",
-                fontFamily: "varela round",
-                padding: "1px",
-                color: "black",
-                borderRadius: "3px"
-              }}
-            >
-              Rise
-            </span>)
-            :(<span style={{fontSize: "35px",borderBottom:"7px solid #cc3232", fontFamily:"varela round", padding:"1px", color:"black",
-            borderRadius:"3px"}}>Fall</span>)
-}           about <b>0.08%</b> by tommorow, <b>0.41%</b> by next 7 days, <b>0.84%</b> in the next 15 days, <b>2.16%</b> in the next 30 days.
-          </Typography>
-          <Typography variant="h6" color="textSecondary">
-            The stock for Wipro is expected to {" "}
-            {(compgrow)?
-            (<span
-              style={{
-                fontSize: "35px",
-                borderBottom: "7px solid #2dc937",
-                fontFamily: "varela round",
-                padding: "1px",
-                color: "black",
-                borderRadius: "3px"
-              }}
-            >
-              Rise
-            </span>)
-            :(<span style={{fontSize: "35px",borderBottom:"7px solid #cc3232", fontFamily:"varela round", padding:"1px", color:"black",
-            borderRadius:"3px"}}>Fall</span>)
-}
-          </Typography>
-        
-        </Paper>)}
-        
+            <Typography variant="h6" color="textSecondary">
+              The stock for Tesla is expected to{" "}
+              {compgrow ? (
+                <span
+                  style={{
+                    fontSize: "35px",
+                    borderBottom: "7px solid #2dc937",
+                    fontFamily: "varela round",
+                    padding: "1px",
+                    color: "black",
+                    borderRadius: "3px"
+                  }}
+                >
+                  Rise
+                </span>
+              ) : (
+                <span
+                  style={{
+                    fontSize: "35px",
+                    borderBottom: "7px solid #cc3232",
+                    fontFamily: "varela round",
+                    padding: "1px",
+                    color: "black",
+                    borderRadius: "3px"
+                  }}
+                >
+                  Fall
+                </span>
+              )}{" "}
+              about <b>0.08%</b> by tommorow, <b>0.41%</b> by next 7 days,{" "}
+              <b>0.84%</b> in the next 15 days, <b>2.16%</b> in the next 30
+              days.
+            </Typography>
+            <Typography variant="h6" color="textSecondary">
+              The stock for Wipro is expected to{" "}
+              {compgrow ? (
+                <span
+                  style={{
+                    fontSize: "35px",
+                    borderBottom: "7px solid #2dc937",
+                    fontFamily: "varela round",
+                    padding: "1px",
+                    color: "black",
+                    borderRadius: "3px"
+                  }}
+                >
+                  Rise
+                </span>
+              ) : (
+                <span
+                  style={{
+                    fontSize: "35px",
+                    borderBottom: "7px solid #cc3232",
+                    fontFamily: "varela round",
+                    padding: "1px",
+                    color: "black",
+                    borderRadius: "3px"
+                  }}
+                >
+                  Fall
+                </span>
+              )}
+            </Typography>
+          </Paper>
+        )}
       </Container>
-     
     </Grid>
   );
 }
