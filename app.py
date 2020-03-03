@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from predictor import predict1
-import numpy as np  
-import matplotlib.pyplot as plt  
-import seaborn as seabornInstance 
-from sklearn.model_selection import train_test_split 
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as seabornInstance
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import json
 from extractTicker import stock_graph
@@ -26,7 +26,7 @@ def pre(delta, r):
         pos = True
 
     for i in range(len(data)):
-        if pos and data[i][0] >= 0.5: 
+        if pos and data[i][0] >= 0.5:
             X.append(round(data[i][0], 5))
         else:
             X.append(round(data[i][0], 5))
@@ -57,19 +57,21 @@ def sentiment_analyzer():
     Receives company name and send back json response ['Positive', 'Negative']
 
     '''
-    query = request.form.get('company', 'tesla')
+    query = request.form.get('query')
 
     l = []
     for i in [1, 7, 15, 30]:
         l.append(pre(i, predict1(query).final_pred).tolist()[0]*100)
 
-    return json.dumps(l)
+    s = stock_graph(query, l).graph()
+    resp = {"predict": l, "graph": s}
+    return json.dumps(resp)
 
 @app.route('/stock-graph', methods=['POST'])
 def graph():
- 
+
     s = stock_graph('tesla').get_history()
-    return s 
+    return s
 
 if __name__ == '__main__':
     app.run(debug=False)
