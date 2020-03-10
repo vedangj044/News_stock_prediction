@@ -9568,6 +9568,11 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
+semver@^7.1.3:
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.1.3.tgz#e4345ce73071c53f336445cfc19efb1c311df2a6"
+  integrity sha512-ekM0zfiA9SCBlsKa2X1hxyxiI4L3B6EbVJkkdgQXnSEEaHlGdvyodMruTiulSRWMMB4NeIuYNMC9rTKTz97GxA==
+
 send@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/send/-/send-0.17.1.tgz#c1d8b059f7900f7466dd4938bdc44e11ddb376c8"
@@ -10733,17 +10738,17 @@ vega-dataflow@5.5.0, vega-dataflow@^5.1.0, vega-dataflow@^5.1.1, vega-dataflow@^
     vega-loader "^4.0.0"
     vega-util "^1.11.0"
 
-vega-embed@^6.2.2:
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.2.2.tgz#8c7f9e1240e70f77a3ed571508598d998caa4185"
-  integrity sha512-u9CX9jpIbu2DY2lqs0J7CLA7+VXNlR+qkzxOwaVKfS0ivB54dxQXKvE59VHV02Nwb5XhaDGTEMN0FRCAvgkdLQ==
+vega-embed@^6.3.2:
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.3.2.tgz#e288300b9676b518534812cea280ccc4d6c62a61"
+  integrity sha512-DAae98zhC3fVoS2n7iJHEmS4/HdqudUJPH4r57FddXoXChnJxPv/3jfraSxf0Pjnm4XfpTCy7kND/+5vzRdovg==
   dependencies:
     fast-json-patch "^3.0.0-1"
     json-stringify-pretty-compact "^2.0.0"
-    semver "^6.3.0"
+    semver "^7.1.3"
     vega-schema-url-parser "^1.1.0"
-    vega-themes "^2.6.0"
-    vega-tooltip "^0.20.0"
+    vega-themes "^2.7.1"
+    vega-tooltip "^0.20.1"
 
 vega-encode@4.5.2:
   version "4.5.2"
@@ -10930,7 +10935,7 @@ vega-statistics@1.7.2, vega-statistics@^1.7.1, vega-statistics@^1.7.2:
   dependencies:
     d3-array "^2.4.0"
 
-vega-themes@^2.6.0:
+vega-themes@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.7.1.tgz#649b1fc56ed5b03c729173be9648220221ed9590"
   integrity sha512-EHCmMpHfEdLMxIH6JYE2+i6Ni8s0pDpaPr6YMDd0Oj7bRL5Z40KRNlHZikiCSdv45y1d6iCggjdGjazPX0RHJQ==
@@ -10945,7 +10950,7 @@ vega-time@1.0.0, vega-time@^1.0.0:
     d3-time-format "^2.2.1"
     vega-util "^1.12.0"
 
-vega-tooltip@^0.20.0:
+vega-tooltip@^0.20.1:
   version "0.20.1"
   resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.20.1.tgz#817323c7f9e3fa9db53afe583493fbfe290d7892"
   integrity sha512-kk1p2VRDAZRdoi9C6UdItOO8GCFbtVfUNT1g3XPpHCYuQ4Lrjffa0SNcT/i69luC3n6qd9VyrceFoPBGM4YvTw==

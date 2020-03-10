@@ -18,5 +18,3 @@ class Classify:
     def classify(self):
         m = f.prob_classify(dict([token, True] for token in self.news_token))
         return m.prob("Positive")
-
-print(Classify("Rocket boost in Tesla stocks").classify())

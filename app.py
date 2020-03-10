@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from predictor import predict1
 import numpy as np
@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import json
 from extractTicker import stock_graph
-
+from news_scraper import scraper
 
 
 app = Flask(__name__)
@@ -50,6 +50,20 @@ def pre(delta, r):
 
     return classi.predict(np.array(r).reshape(1, -1))
 
+@app.route('/get_summary/<comp>', methods=["GET"])
+def get_summary(comp):
+    news = scraper(comp).get_title()
+    print(news)
+    test_file = open('summary.txt', 'w')
+    test_file.write(news)
+    test_file.close()
+    pointers = 3
+    try:
+        summary = Summarize('summary.txt', pointers).generate_summary()
+    except:
+        return("Articles are short. Unable to get sufficient pointers")
+    print("SUMMARY SENT!")
+    return jsonify(summary)
 
 @app.route('/news', methods=['POST'])
 def sentiment_analyzer():
@@ -74,4 +88,4 @@ def graph():
     return s
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

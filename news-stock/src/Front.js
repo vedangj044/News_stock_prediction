@@ -18,7 +18,11 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import Cookies from "universal-cookie";
-import axios from "axios";
+import vegaEmbed from "vega-embed";
+
+var global_arr = [];
+var img = "";
+var arrdata = [];
 
 function Copyright() {
   return (
@@ -85,7 +89,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Front() {
-  var port = "192.168.43.119:5000/";
+  var port = "192.168.43.8:5000/";
   const cookies = new Cookies();
   const classes = useStyles();
 
@@ -93,19 +97,18 @@ export default function Front() {
 
   const routeChange = () => {
     let path = `/Dashboard`;
-    cookies.set("userId", comp, { path: "/" });
+    cookies.set("userId", global_arr, { path: "/" });
     // history.push(path);
   };
 
   const [news, setNews] = useState([]);
 
   const handleDeleteChip = event => {
-    var index = comp.indexOf(event.target.value);
-    comp.splice(index, 1);
-    setComp(comp);
+    var index = global_arr.indexOf(event.target.value);
+    global_arr.splice(index, 1);
     fetch(`${port}news`, {
       methods: "Post",
-      query: comp
+      query: global_arr
     })
       .then(res => res.json())
       .then(res => setNews(res))
@@ -116,47 +119,97 @@ export default function Front() {
     console.info("You clicked the Chip.");
   };
 
+  const [result, setResult] = useState([]);
+  const [fuck, setFuck] = useState("FUCKER");
+
+  const [cards, setCards] = useState(true);
+
+
+  function dataGraph(res){
+  //  vegaEmbed("#view", "http://192.168.43.48/graph")
+  var spec = "http://192.168.43.48:5000/graph";
+  vegaEmbed('#view', spec).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+    arrdata.push(res['predict'])
+    img = res['image']
+  }
+
   const handleEnter = event => {
     if (event.key === "Enter") {
       var compadd = event.target.value;
-      if (compadd !== "" && comp.indexOf(compadd) == -1) {
-        setComp([...comp, compadd]);
-        console.log("WIIOSFUI");
-        const params = {
-          query: "tesla"
-        };
-        event.preventDefault();
-        axios
-          .post(
-            "http://192.168.43.119:5000/news",
-            {
-              query: "tesla"
-            },
-            {
-              headers: {
-                "Content-Type":
-                  "application/x-www-form-urlencoded; charset=UTF-8"
-              }
-            }
-          )
-          .then(response => {
-            console.log(response);
+      if (compadd !== "" && global_arr.indexOf(compadd) === -1) {
+        global_arr.push(event.target.value);
+        setLoad([...loading, true]);
+        console.log("HI THERE", global_arr);
+        var fo = new FormData();
+        var arrl = [];
+        for (var i=0; i< global_arr.length - 2 ; i++)
+        {
+          arrl[i] = global_arr[i];
+        }
+        arrl[global_arr.length-1] = false;
+        var bastard = global_arr
+        setLoad(bastard);
+        console.log(loading)
+        
+        if (global_arr.length > 0) {
+          let fucker = global_arr[global_arr.length - 1];
+          fo.append("query", fucker);
+          fetch("http://192.168.43.48:5000/news", {
+            method: "POST",
+            body: fo
           })
-          .catch(error => {
-            console.log(error.response);
-          });
+            .then(resp => resp.json())
+            // .then(res => vegaEmbed("#view", res['graph'], { height: "500px", width: "500px" }))
+            // .then(res => arrdata.push(res['predict']))
+            .then(res => dataGraph(res))
+            .then(res => console.log(res))
+            .then(res => setLoad(arrl))
+            .then(res => setCards(false))
+            .then(res => console.log(loading))
+            .then(res => {console.log(res); getSummary()})
+            .catch(err => console.log(err))
+        }
       }
+    
+    event.preventDefault();
+    setFuck(Math.random());
+
     }
   };
+  const [summ, setSummary] = useState(0);
+  const summary = () => {
+    if(summ !== 0){
+    return(
+      <Typography>
+        {summ}
+      </Typography>
+      
+    )
+    }
+    return <div></div>
+  }
+
+  
+  const getSummary = () => {
+    fetch("http://192.168.43.48:5000/get_summary",{
+      method: "GET"
+    })
+    .then(resp => resp.json())
+    .then(res => console.log("THE RESPONSE FROM THE GET_SUMMARY IS: ", res))
+    .then(res => setSummary(res))
+    .catch(err => console.log(err))
+  }
 
   const handleComp = event => {
     var compadd = event.target.value;
-    setComp([...comp, compadd]);
+    setComp([...global_arr, compadd]);
   };
 
-  const [loading, setLoad] = useState(false);
+  const [loading, setLoad] = useState([]);
 
-  const [comp, setComp] = useState(["Tesla", "Wipro"]);
+  const [comp, setComp] = useState([]);
 
   const [compgrow, setCompgrow] = useState(true);
 
@@ -166,8 +219,18 @@ export default function Front() {
   ]);
 
   useEffect(() => {
-    console.log(comp);
+    console.log(global_arr);
   });
+
+
+ const summ_get = () => {
+   var b = '';
+   fetch('http://192.168.43.48:5000/get_summary', {
+     method: 'GET'
+   }).then(res => res.json()).then(res => b = res).catch(Err => console.log(Err))
+
+   return b
+ }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -185,6 +248,7 @@ export default function Front() {
           >
             Famulus
           </Typography>
+          <div style={{display:"none" }}>{fuck}</div>
 
           <Typography
             variant="h3"
@@ -192,6 +256,8 @@ export default function Front() {
             style={{ fontFamily: "source sans pro", color: "#3c3428" }}
           >
             Your Intelligent Stock Assistant
+            {arrdata}
+            {console.log(arrdata)}
           </Typography>
         </Zoom>
       </Container>
@@ -218,7 +284,7 @@ export default function Front() {
                 onKeyPress={handleEnter}
               />
             </Paper>
-            {comp.map(comp1 => (
+            {global_arr.map(comp1 => (
               <Chip
                 variant="outlined"
                 color="primary"
@@ -233,7 +299,8 @@ export default function Front() {
             ))}
           </form>
         </div>
-        {loading ? (
+       { global_arr.map(com => (
+        loading[global_arr.indexOf(com)] ? (
           <Grid container>
             <Box width={500}>
               <Skeleton variant="rect" width={600} height={400} />
@@ -243,91 +310,127 @@ export default function Front() {
             </Box>
           </Grid>
         ) : (
-          <Paper style={{ padding: "30px", width: "600px" }}>
-            <Grid container spacing="8">
-              <Grid item>
-                <Typography variant="h3" style={{ color: "grey" }}>
-                  Stock Analysis
-                </Typography>
+          
+            <Paper style={{ padding: "30px", width: "600px" }}>
+              <Grid container spacing="8">
+                <Grid item>
+                  <Typography variant="h3" style={{ color: "grey" }}>
+                   Stock Analysis
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  {compgrow ? (
+                    <TrendingUpIcon
+                      style={{ fontSize: "60px", color: "#2dc937" }}
+                    />
+                  ) : (
+                    <TrendingDownIcon
+                      style={{ fontSize: "60px", color: "#cc3232" }}
+                    />
+                  )}
+                </Grid>
               </Grid>
-              <Grid item>
-                {compgrow ? (
-                  <TrendingUpIcon
-                    style={{ fontSize: "60px", color: "#2dc937" }}
-                  />
-                ) : (
-                  <TrendingDownIcon
-                    style={{ fontSize: "60px", color: "#cc3232" }}
-                  />
-                )}
-              </Grid>
-            </Grid>
 
-            <Typography variant="h6" color="textSecondary">
-              The stock for Tesla is expected to{" "}
-              {compgrow ? (
-                <span
-                  style={{
-                    fontSize: "35px",
-                    borderBottom: "7px solid #2dc937",
-                    fontFamily: "varela round",
-                    padding: "1px",
-                    color: "black",
-                    borderRadius: "3px"
-                  }}
-                >
-                  Rise
-                </span>
-              ) : (
-                <span
-                  style={{
-                    fontSize: "35px",
-                    borderBottom: "7px solid #cc3232",
-                    fontFamily: "varela round",
-                    padding: "1px",
-                    color: "black",
-                    borderRadius: "3px"
-                  }}
-                >
-                  Fall
-                </span>
-              )}{" "}
-              about <b>0.08%</b> by tommorow, <b>0.41%</b> by next 7 days,{" "}
-              <b>0.84%</b> in the next 15 days, <b>2.16%</b> in the next 30
-              days.
-            </Typography>
-            <Typography variant="h6" color="textSecondary">
-              The stock for Wipro is expected to{" "}
-              {compgrow ? (
-                <span
-                  style={{
-                    fontSize: "35px",
-                    borderBottom: "7px solid #2dc937",
-                    fontFamily: "varela round",
-                    padding: "1px",
-                    color: "black",
-                    borderRadius: "3px"
-                  }}
-                >
-                  Rise
-                </span>
-              ) : (
-                <span
-                  style={{
-                    fontSize: "35px",
-                    borderBottom: "7px solid #cc3232",
-                    fontFamily: "varela round",
-                    padding: "1px",
-                    color: "black",
-                    borderRadius: "3px"
-                  }}
-                >
-                  Fall
-                </span>
-              )}
-            </Typography>
-          </Paper>
+              <Typography variant="h6" color="textSecondary">
+                The stock for {com} is expected to{" "}
+                {compgrow ? (
+                  <span
+                    style={{
+                      fontSize: "35px",
+                      borderBottom: "7px solid #2dc937",
+                      fontFamily: "varela round",
+                      padding: "1px",
+                      color: "black",
+                      borderRadius: "3px"
+                    }}
+                  >
+                    Rise
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      fontSize: "35px",
+                      borderBottom: "7px solid #cc3232",
+                      fontFamily: "varela round",
+                      padding: "1px",
+                      color: "black",
+                      borderRadius: "3px"
+                    }}
+                  >
+                    Fall
+                  </span>
+                )}{" "}
+                about <b>{Math.round(arrdata[global_arr.indexOf(com)][0] * 1000) / 1000}</b> by tommorow,{" "}
+                <b>{Math.round(arrdata[global_arr.indexOf(com)][1] * 1000) / 1000}</b> by next 7 days,{" "}
+                <b>{Math.round(arrdata[global_arr.indexOf(com)][2] * 1000) / 1000}</b> in the next 15
+                days, <b>{Math.round(arrdata[global_arr.indexOf(com)][3] * 1000) / 1000}</b> in the next
+                30 days.
+              </Typography>
+              <Typography variant="h6" color="textSecondary">
+                The stock for {com} is expected to{" "}
+                {compgrow ? (
+                  <span
+                    style={{
+                      fontSize: "35px",
+                      borderBottom: "7px solid #2dc937",
+                      fontFamily: "varela round",
+                      padding: "1px",
+                      color: "black",
+                      borderRadius: "3px"
+                    }}
+                  >
+                    Rise
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      fontSize: "35px",
+                      borderBottom: "7px solid #cc3232",
+                      fontFamily: "varela round",
+                      padding: "1px",
+                      color: "black",
+                      borderRadius: "3px"
+                    }}
+                  >
+                    Fall
+                  </span>
+                )}
+              </Typography>
+            </Paper>
+          ))
         )}
+        {cards ?
+        (<Grid container>
+          <Box width={500}>
+            <Skeleton variant="rect" width={600} height={400} />
+            <Box pt={0.5}>
+              <Skeleton />
+            </Box>
+          </Box>
+        </Grid>):
+        (<Paper style={{marginTop:"50px"}}>
+          <div style={{height:"400px", width:"600px"}} id="view">
+          </div>
+        </Paper>)}
+        {cards ?
+        (<Grid container>
+          <Box width={500}>
+            <Skeleton variant="rect" width={600} height={400} />
+            <Box pt={0.5}>
+              <Skeleton />
+            </Box>
+          </Box>
+        </Grid>):
+        (<Paper style={{marginTop:"50px"}}>
+          <div style={{height:"400px", width:"600px"}} >
+            {console.log("HERE IS THE IMAGE", img)}
+           <img style={{maxHeight: "400px", maxWidth:"500px"}} src={img} alt=""/>
+          </div>
+          <Typography id="summarize">
+            {summ_get()}
+          </Typography>
+        </Paper>)}
+    
       </Container>
     </Grid>
   );

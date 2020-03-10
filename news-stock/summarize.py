@@ -19,7 +19,7 @@ class Summarize:
         
         return sentences
 
-    def sentence_similarity(self, sent1, sent2, stopwords=None):
+    def sentence_similarity(sent1, sent2, stopwords=None):
         if stopwords is None:
             stopwords = []
     
@@ -52,8 +52,7 @@ class Summarize:
         for idx1 in range(len(sentences)):
             for idx2 in range(len(sentences)):
                 if idx1 == idx2: #ignore if both are same sentences
-                    continue
-                print(sentences[idx1], sentences[idx2], stop_words) 
+                    continue 
                 similarity_matrix[idx1][idx2] = self.sentence_similarity(sentences[idx1], sentences[idx2], stop_words)
 
         return similarity_matrix
@@ -76,8 +75,4 @@ class Summarize:
             summarize_text.append(" ".join(ranked_sentence[i][1]))
 
         summary = "".join(summarize_text)
-        print("WORKING")
         return summary
-
-print("WORKDING")
-print(Summarize('test_file.txt', 3).generate_summary())
