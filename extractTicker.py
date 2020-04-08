@@ -6,15 +6,7 @@ import pandas as pd
 from datetime import date, timedelta, datetime
 from urllib.request import urlopen
 import json
-# a = input()
-# query = "https://www.marketwatch.com/tools/quotes/lookup.asp?siteID=mktw&Lookup={}&Country=all&Type=All".format(a)
-# r = requests.get(query)
-#
-# soup_news = BeautifulSoup(r.content, "html.parser")
-#
-# for link in soup_news.find_all('td'):
-#     print(link.text)
-#     break
+
 
 class stock_graph():
 

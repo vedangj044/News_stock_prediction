@@ -4,6 +4,7 @@ import seaborn as seabornInstance
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
+
 def pre(delta, r):
 
     with open('fuck1.txt', 'r') as values:
@@ -13,7 +14,7 @@ def pre(delta, r):
     Y = []
 
     pos = False
-    if r>0.5:
+    if r > 0.5:
         pos = True
 
     for i in range(len(data)):

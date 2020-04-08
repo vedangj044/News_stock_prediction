@@ -1,9 +1,9 @@
 from classifier import Classify
 from news_scraper import scraper
-import numpy as np  
-import matplotlib.pyplot as plt  
-import seaborn as seabornInstance 
-from sklearn.model_selection import train_test_split 
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as seabornInstance
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 import json
@@ -22,12 +22,11 @@ class predict1():
 
         for i in sc:
             value = Classify(i["title"]).classify()
-            if value == "Positive":
-                self.score+=1
+            self.score+=value
 
         self.final_pred = self.score/self.articles
-        
+
 
     def resp(self):
-        
+
         return json.dumps({"score": self.final_pred, "articles": self.articles})

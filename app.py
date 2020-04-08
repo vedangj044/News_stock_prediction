@@ -14,6 +14,7 @@ SESSION_TYPE = 'redis'
 app.config['SECRET_KEY'] = "THIS IS SECRET"
 app.config.from_object(__name__)
 
+
 @app.route('/news', methods=['POST'])
 def sentiment_analyzer():
     '''
@@ -30,11 +31,13 @@ def sentiment_analyzer():
 
     return json.dumps({"predict": l})
 
+
 @app.route('/stock-graph', methods=['GET'])
 def graph():
 
     return stock_graph(session['query'],
                        session.pop('list_predicted')).graph()
+
 
 @app.route('/get-summary/', methods=["GET"])
 def get_summary():

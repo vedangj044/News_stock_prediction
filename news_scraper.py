@@ -6,6 +6,10 @@ import datetime
 class scraper():
 
     def __init__(self, keyword: str, limit=10, time_=1):
+
+        if "stocks" not in keyword:
+            keyword+=" stocks"
+
         self.time_=time_
         self.count=0
         self.url = "https://news.google.com/search?q={0}&hl=en-IN&gl=IN&ceid=IN:en"
@@ -58,4 +62,3 @@ class scraper():
 if __name__ == "__main__":
     sc = scraper("Tesla Stocks")
     sc.pretty_print()
-

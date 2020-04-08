@@ -7,6 +7,7 @@ from nltk.probability import UniformProbDist as U
 model_file = open('my_classifier.pickle', 'rb')
 f = pickle.load(model_file)
 
+
 class Classify:
     """
     This class classify the given news as Positive or Negative
