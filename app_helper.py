@@ -5,7 +5,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 def pre(delta, r):
-    data = eval(open('fuck1.txt', 'r').read())
+
+    with open('fuck1.txt', 'r') as values:
+        data = eval(values.read())
+
     X = []
     Y = []
 
