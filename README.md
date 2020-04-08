@@ -10,3 +10,6 @@ Famulus is an intelligent stock predictor web application that reads the latest 
 The sentiment of share market and investment largely depends on the news. Through this project, relationship between news and stock trend. This project is about taking non quantifiable data such as financial news articles about a company and predicting its future stock trend.  <br/>
 
 ![Selection_004](https://user-images.githubusercontent.com/43697446/74592475-d6828700-5047-11ea-8a35-8978980edd6e.png)
+
+### API 
+![demo (2)](https://user-images.githubusercontent.com/43697446/78815906-8b08ab80-79ee-11ea-856e-aa7ec32ef397.jpg)
