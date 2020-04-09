@@ -18,9 +18,7 @@ class Summarize:
 
         return sentences
 
-    def sentence_similarity(self, sent1, sent2, stopwords=None):
-        if stopwords is None:
-            stopwords = []
+    def sentence_similarity(self, sent1, sent2, stopwords=[]):
 
         sent1 = [w.lower() for w in sent1]
         sent2 = [w.lower() for w in sent2]

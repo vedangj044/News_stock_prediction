@@ -5,3 +5,11 @@ flask
 flask-cors
 sklearn
 networkx
+pandas
+numpy
+matplotlib
+seaborn
+yfinance
+altair
+coverage
+codecov

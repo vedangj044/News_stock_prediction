@@ -22,6 +22,9 @@ def sentiment_analyzer():
     '''
     query = request.form.get('query')
 
+    if query is None:
+        return json.dumps({"Message": "Send query in formdata"})
+
     l = []
     for i in [1, 7, 15, 30]:
         l.append(pre(i, predict1(query).final_pred).tolist()[0]*100)
@@ -48,4 +51,4 @@ def get_summary():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) # pragma: no cover

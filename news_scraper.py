@@ -18,8 +18,6 @@ class scraper():
 
         if self.request_news.status_code == 200:
             self.link_extract()
-        else:
-            print("Query not working !!!")
 
     def link_extract(self):
         self.soup_news = BeautifulSoup(self.request_news.content, "html.parser")
@@ -46,19 +44,14 @@ class scraper():
                 self.results.append(item)
             self.count+=1
 
-    def pretty_print(self):
-        data = json.dumps(self.results)
-        f = open("data.json", "w")
-        f.write(data)
-        f.close()
-
     def get_title(self):
         news = ''
         for i in self.results:
             news += ". " + i['title']
         return news
 
-
-if __name__ == "__main__":
-    sc = scraper("Tesla Stocks")
-    sc.pretty_print()
+    # def pretty_print(self):
+    #     data = json.dumps(self.results)
+    #     f = open("data.json", "w")
+    #     f.write(data)
+    #     f.close()

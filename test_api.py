@@ -19,6 +19,10 @@ class endpointsCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_empty_query(self):
+        result = self.app.post("/news")
+        self.assertEqual(result.status_code, 200)
+
     def test_endpoints_status_code(self):
         result = self.app.post("/news", data={"query": "tesla"})
         self.assertEqual(result.status_code, 200)
