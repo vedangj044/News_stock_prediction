@@ -15,11 +15,12 @@ def pre(delta, r):
 
     pos = False
     if r > 0.5:
-        pos = True
+        # triggered only when news articles are negative 
+        pos = True # pragma: no cover
 
     for i in range(len(data)):
         if pos and data[i][0] >= 0.5:
-            X.append(round(data[i][0], 5))
+            X.append(round(data[i][0], 5)) # pragma: no cover
         else:
             X.append(round(data[i][0], 5))
 
