@@ -1,6 +1,8 @@
 import unittest
 from predictor import predict1
 import pandas as pd
+from model import Sentiment
+from nltk import NaiveBayesClassifier
 from extractTicker import stock_graph
 from news_scraper import scraper
 
@@ -24,6 +26,12 @@ class predictorTestCase(unittest.TestCase):
         self.pre = predict1("Tesla")
         self.assertTrue(self.pre.final_pred)
 
+class modelTestCase(unittest.TestCase):
+
+    def test_model_train(self):
+        self.model = Sentiment().train_data()
+        self.assertIsInstance(self.model, NaiveBayesClassifier)
+
 class extractTicketTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -38,5 +46,6 @@ class extractTicketTestCase(unittest.TestCase):
     def test_graph(self):
         self.assertIsInstance(self.sg.graph(), dict)
 
+
 if __name__ == "__main__":
-    unittest.main() # pragma: no cover 
+    unittest.main() # pragma: no cover

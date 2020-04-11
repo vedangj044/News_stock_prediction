@@ -20,7 +20,3 @@ class predict1():
             self.score+=value
 
         self.final_pred = self.score/self.articles
-
-    # for test purposes
-    # def resp(self):
-    #     return json.dumps({"score": self.final_pred, "articles": self.articles})

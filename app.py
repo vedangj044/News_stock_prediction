@@ -26,8 +26,10 @@ def sentiment_analyzer():
         return json.dumps({"Message": "Send query in formdata"})
 
     list_predicted = []
+    news_score = predict1(query).final_pred
+
     for i in [1, 7, 15, 30]:
-        value_of_pre = pre(i, predict1(query).final_pred).tolist()[0]*100
+        value_of_pre = pre(i, news_score).tolist()[0]*100
         list_predicted.append(value_of_pre)
 
     session['query'] = query

@@ -79,7 +79,5 @@ class Sentiment:
         classifier = NaiveBayesClassifier.train(train_set)
         f = open('my_classifier.pickle', 'wb')
         pickle.dump(classifier, f)
+        f.close()
         return classifier
-
-
-Sentiment().train_data()
