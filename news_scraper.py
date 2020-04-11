@@ -28,7 +28,11 @@ class scraper():
             if a_tag:
                 l = a_tag[0]['href']
                 title = link.find('h3').text
-                time_value = link.find('time')["datetime"]
+                _time = link.find('time')
+                if _time is not None:
+                    time_value = link.find('time')["datetime"]
+                else:
+                    continue
                 now = datetime.datetime.now()
                 time = datetime.datetime.strptime(time_value, '%Y-%m-%dT%H:%M:%SZ')
                 if self.count==10:

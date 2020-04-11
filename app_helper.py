@@ -38,4 +38,4 @@ def pre(delta, r):
     reg = LinearRegression()
     classi = reg.fit(X, Y)
 
-    return classi.predict(np.array(r).reshape(1, -1))
+    return classi.predict(np.array(r).reshape(1, -1)).tolist()[0]*100
