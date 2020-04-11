@@ -1,7 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as seabornInstance
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 
@@ -15,7 +12,7 @@ def pre(delta, r):
 
     pos = False
     if r > 0.5:
-        # triggered only when news articles are negative 
+        # triggered only when news articles are negative
         pos = True # pragma: no cover
 
     for i in range(len(data)):

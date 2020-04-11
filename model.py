@@ -1,10 +1,10 @@
 from nltk.corpus import twitter_samples, stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.tag import pos_tag 
-from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
 from nltk import NaiveBayesClassifier
-import re, string 
-import random 
+import re
+import string
+import random
 import pickle
 
 class Sentiment:
@@ -18,14 +18,12 @@ class Sentiment:
         self.positive_tweets_tokens = twitter_samples.tokenized('positive_tweets.json')
         self.negative_tweets_tokens = twitter_samples.tokenized('negative_tweets.json')
 
-    
+
     def remove_noise(self, token_):
         cleaned_tokens = []
 
         for token, tag in pos_tag(token_):
-            '''
-            Here regex removes the unwanted hyperlinks and username preceded by @
-            '''
+            # Here regex removes the unwanted hyperlinks and username preceded by @
             token = re.sub('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+#]|[!*\(\),]|'\
                        '(?:%[0-9a-fA-F][0-9a-fA-F]))+','', token)
             token = re.sub("(@[A-Za-z0-9_]+)","", token)
@@ -45,7 +43,7 @@ class Sentiment:
 
         return cleaned_tokens
 
-        
+
     def get_tweet_for_model(self, cleaned_tokens_list):
         for tweet_tokens in cleaned_tokens_list:
             yield dict([token, True] for token in tweet_tokens)
@@ -75,16 +73,13 @@ class Sentiment:
 
         return train_data, test_data
 
-    
+
     def train_data(self):
         train_set = self.preprocess_data()[0]
         classifier = NaiveBayesClassifier.train(train_set)
         f = open('my_classifier.pickle', 'wb')
         pickle.dump(classifier, f)
-        return classifier 
+        return classifier
+
 
 Sentiment().train_data()
-
-
-
-        

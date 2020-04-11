@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import yfinance as yf
 import altair as alt
 import pandas as pd
-from datetime import date, timedelta, datetime
+from datetime import date, timedelta
 from urllib.request import urlopen
 import json
 

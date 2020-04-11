@@ -1,8 +1,6 @@
 from model import Sentiment
-from nltk import classify
 from nltk.tokenize import word_tokenize
 import pickle
-from nltk.probability import UniformProbDist as U
 
 model_file = open('my_classifier.pickle', 'rb')
 f = pickle.load(model_file)

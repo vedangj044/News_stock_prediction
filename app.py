@@ -25,14 +25,15 @@ def sentiment_analyzer():
     if query is None:
         return json.dumps({"Message": "Send query in formdata"})
 
-    l = []
+    list_predicted = []
     for i in [1, 7, 15, 30]:
-        l.append(pre(i, predict1(query).final_pred).tolist()[0]*100)
+        value_of_pre = pre(i, predict1(query).final_pred).tolist()[0]*100
+        list_predicted.append(value_of_pre)
 
     session['query'] = query
-    session['list_predicted'] = l
+    session['list_predicted'] = list_predicted
 
-    return json.dumps({"predict": l})
+    return json.dumps({"predict": list_predicted})
 
 
 @app.route('/stock-graph', methods=['GET'])
