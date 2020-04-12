@@ -4,7 +4,7 @@ import datetime
 
 class scraper():
 
-    def __init__(self, keyword: str, limit=10, time_=1):
+    def __init__(self, keyword: str, limit=10, time_=5):
 
         if "stocks" not in keyword:
             keyword+=" stocks"
@@ -32,7 +32,7 @@ class scraper():
                 if _time is not None:
                     time_value = link.find('time')["datetime"]
                 else:
-                    continue
+                    continue # pragma: no cover
                 now = datetime.datetime.now()
                 time = datetime.datetime.strptime(time_value, '%Y-%m-%dT%H:%M:%SZ')
                 if self.count==10:
