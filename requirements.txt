@@ -13,3 +13,4 @@ yfinance
 altair
 coverage
 codecov
+flask-sqlalchemy
