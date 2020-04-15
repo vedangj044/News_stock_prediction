@@ -5,3 +5,5 @@ __pycache__
 htmlcov
 env
 .pytest_cache
+data.sqlite3
+main.txt

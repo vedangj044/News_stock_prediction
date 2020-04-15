@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify, session
-from flask_cors import CORS
+from flask import Flask, request, jsonify, Response
+from flask_cors import *
+from flask_sqlalchemy import SQLAlchemy
 from summarize import Summarize
 from predictor import predict1
 import json
+import datetime
 from multiprocessing.pool import ThreadPool
 from extractTicker import stock_graph
 from news_scraper import scraper
@@ -10,22 +12,34 @@ from app_helper import pre
 
 
 app = Flask(__name__)
-CORS(app)
-SESSION_TYPE = 'redis'
+CORS(app, supports_credentials=True)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.sqlite3'
 app.config['SECRET_KEY'] = "THIS IS SECRET"
 app.config.from_object(__name__)
+db = SQLAlchemy(app)
 
 
-@app.route('/news', methods=['POST'])
+class QueryModel(db.Model):
+
+    id = db.Column(db.Integer, primary_key = True)
+    query_ = db.Column(db.String(90), nullable = False, unique = True)
+    list_predicted = db.Column(db.String(200), nullable = False)
+    news_score = db.Column(db.Float)
+    time = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+
+@app.route('/news', methods=['GET'])
 def sentiment_analyzer():
     '''
     Returns the change in value in interval of days.
     '''
-    query = request.form.get('query')
+    query = request.args.get('query', type=str)
 
     if query is None:
-        return json.dumps({"Message": "Send query in formdata"})
+        return Response("{'Message': 'Send query in get query'}", status=404,
+                        mimetype='application/json')
 
+    query = query.replace("%20", " ")
     list_predicted = {}
     news_score = predict1(query).final_pred
 
@@ -40,8 +54,16 @@ def sentiment_analyzer():
     list_predicted["15"] = inter15.get()
     list_predicted["30"] = inter30.get()
 
-    session['query'] = query
-    session['list_predicted'] = list_predicted
+    item = QueryModel.query.filter_by(query_=query).first()
+
+    if item is None:
+        item = QueryModel(query_=query, list_predicted=str(list_predicted),
+                          news_score=news_score)
+        db.session.add(item)
+
+    item.list_predicted = str(list_predicted)
+    item.news_score = news_score
+    db.session.commit()
 
     return json.dumps({"predict": list_predicted})
 
@@ -49,23 +71,42 @@ def sentiment_analyzer():
 @app.route('/stock-graph', methods=['GET'])
 def graph():
 
-    list_predicted = session.pop('list_predicted')
+    query = request.args.get('query', type=str)
+
+    if query is None:
+        return Response("{'Message': 'Send query in get query'}", status=404,
+                        mimetype='application/json')
+
+    query = query.replace("%20", " ")
+    try:
+        list_predicted = eval(QueryModel.query.filter_by(query_=query)
+                                              .first().list_predicted)
+    except Exception as e:
+        return Response("{'message': 'invalid query'}", status=404)
+
     graph_pre = [list_predicted["1"],
                  list_predicted["7"],
                  list_predicted["15"],
                  list_predicted["30"]]
 
-    return stock_graph(session['query'],
+    return stock_graph(query,
                        graph_pre).graph()
 
 
-@app.route('/get-summary/', methods=["GET"])
+@app.route('/get-summary', methods=["GET"])
 def get_summary():
 
-    news = scraper(session['query']).get_title()
+    query = request.args.get('query', type=str)
+
+    if query is None:
+        return Response("{'Message': 'Send query in get query'}", status=404,
+                        mimetype='application/json')
+    query = query.replace("%20", " ")
+    news = scraper(query).get_title()
     pointers = 3
     return jsonify(Summarize(news, pointers).generate_summary())
 
 
 if __name__ == '__main__':
+    db.create_all() # pragma: no cover
     app.run(debug=True) # pragma: no cover
