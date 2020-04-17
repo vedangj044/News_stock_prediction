@@ -39,5 +39,4 @@ class endpointsCase(unittest.TestCase):
         self.assertEqual(self.app.get("/stock-graph?query=tesla").status_code, 200)
         self.assertEqual(self.app.get("/get-summary?query=tesla").status_code, 200)
 
-    def test_endpoints_repeated(self):
         self.assertEqual(self.app.get("/news?query=tesla").status_code, 200)

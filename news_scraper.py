@@ -12,7 +12,7 @@ class scraper():
         self.time_=time_
         self.count=0
         self.url = "https://news.google.com/search?q={0}&hl=en-IN&gl=IN&ceid=IN:en"
-        self.query = self.url.format("%".join(keyword.split()))
+        self.query = self.url.format("%20".join(keyword.split()))
         self.request_news = requests.get(self.query)
 
         if self.request_news.status_code == 200:
@@ -20,7 +20,6 @@ class scraper():
 
     def link_extract(self):
         self.soup_news = BeautifulSoup(self.request_news.content, "html.parser")
-
         self.results = []
 
         for link in self.soup_news.find_all('div', class_="NiLAwe"):
@@ -38,7 +37,8 @@ class scraper():
                 if self.count==10:
                     break
                 if (now-time).days>self.time_:
-                    continue
+                    continue # pragma: no cover
+                    # depends on news
                 item = {
                     "title": title,
                     "link": "https://news.google.com/"+l,

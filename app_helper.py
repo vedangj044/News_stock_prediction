@@ -1,6 +1,13 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression
+import datetime
 
+def valid_time(a):
+    delta = datetime.datetime.now() - a
+    min = delta.total_seconds()/60
+    if min >= 5:
+        return False # pragma: no cover
+    return True
 
 def pre(delta, r):
 
