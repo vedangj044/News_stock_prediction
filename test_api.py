@@ -40,3 +40,7 @@ class endpointsCase(unittest.TestCase):
         self.assertEqual(self.app.get("/get-summary?query=tesla").status_code, 200)
 
         self.assertEqual(self.app.get("/news?query=tesla").status_code, 200)
+
+    def test_endpoints_fake_ticker(self):
+        self.assertEqual(self.app.get("/news?query=google").status_code, 200)
+        self.assertEqual(self.app.get("/stock-graph?query=google").status_code, 404)

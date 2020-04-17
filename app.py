@@ -92,8 +92,12 @@ def graph():
                  list_predicted["15"],
                  list_predicted["30"]]
 
-    return stock_graph(query,
-                       graph_pre).graph()
+    try:
+        return stock_graph(query,
+                           graph_pre).graph()
+    except Exception as e:
+        return Response("{'message': 'ticker not found'}", status=404)
+
 
 
 @app.route('/get-summary', methods=["GET"])

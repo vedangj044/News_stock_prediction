@@ -3,9 +3,10 @@ from bs4 import BeautifulSoup
 import yfinance as yf
 import altair as alt
 import pandas as pd
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from urllib.request import urlopen
 import json
+import dateutil.relativedelta
 
 
 class stock_graph():
@@ -26,7 +27,9 @@ class stock_graph():
             break
 
     def get_history(self):
-        self.tickerDF = yf.Ticker(self.ticker).history(period='1d', start='2020-2-26')
+        self.one_mon = datetime.now() + dateutil.relativedelta.relativedelta(months=-1)
+        self.one_mon = str(self.one_mon)[0:10]
+        self.tickerDF = yf.Ticker(self.ticker).history(period='1d', start=self.one_mon)
         self.tickerDF_converted = {'date': [],
                                    'price': [],
                                    'color': []}
@@ -37,9 +40,6 @@ class stock_graph():
             self.tickerDF_converted['price'].append(i[1][0])
             self.tickerDF_converted['color'].append('a')
 
-        self.tickerDF_converted['date'].append(date.today())
-        self.tickerDF_converted['price'].append(self.current_price_value)
-        self.tickerDF_converted['color'].append('a')
         self.tickerDF_converted = pd.DataFrame(self.tickerDF_converted)
 
     def current_price(self):
@@ -50,14 +50,14 @@ class stock_graph():
         self.predict_price()
 
     def predict_price(self):
-        self.predict_price_value = {'date': [pd.to_datetime('today'),
-                                            pd.to_datetime('today')+timedelta(days=1),
-                                            pd.to_datetime('today')+timedelta(days=7),
-                                            pd.to_datetime('today')+timedelta(days=15),
+        self.predict_price_value = {'date': [pd.to_datetime('today').date(),
+                                            (pd.to_datetime('today')+timedelta(days=1)).date(),
+                                            (pd.to_datetime('today')+timedelta(days=7)).date(),
+                                            (pd.to_datetime('today')+timedelta(days=15)).date(),
                                             pd.to_datetime('today')+timedelta(days=30),
                                             ],
                                     'price': [self.current_price_value],
-                                    'color': ['b',"b","b","b","b"]}
+                                    'color': ['b',"b","b","b", "b"]}
 
         for i in self.regression_output:
             temp_data = self.current_price_value+(self.current_price_value*i)/100
@@ -66,14 +66,14 @@ class stock_graph():
         self.predict_price_value = pd.DataFrame(self.predict_price_value)
 
     def graph(self):
-        self.final_dataset = self.predict_price_value.append(self.tickerDF_converted)
+        self.final_dataset = self.tickerDF_converted.append(self.predict_price_value)
         base = alt.Chart(self.final_dataset).mark_line().encode(
             x='date:T',
             y='price:Q',
             color='color:O'
         ).configure_projection(
             scale=10
-        )
+        ).interactive()
         return base.to_dict()
 
 # s = stock_graph('infosys', [5.093, 0.524, 1.082, 2.355])
