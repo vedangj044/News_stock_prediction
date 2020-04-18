@@ -14,3 +14,4 @@ altair
 coverage
 codecov
 flask-sqlalchemy
+gunicorn
