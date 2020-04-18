@@ -43,3 +43,4 @@ yfinance==0.1.54
 zipp==3.1.0
 coverage
 gunicorn
+codecov
