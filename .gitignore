@@ -7,3 +7,4 @@ env
 .pytest_cache
 data.sqlite3
 main.txt
+migrations

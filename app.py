@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from summarize import Summarize
 from predictor import predict1
 import json
+import os
 import datetime
 from multiprocessing.pool import ThreadPool
 from extractTicker import stock_graph
@@ -13,9 +14,8 @@ from app_helper import pre, valid_time
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.sqlite3'
-app.config['SECRET_KEY'] = "THIS IS SECRET"
-app.config.from_object(__name__)
+app.config.from_object(os.environ['APP_SETTINGS'])
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
