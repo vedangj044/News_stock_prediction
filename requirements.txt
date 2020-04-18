@@ -41,3 +41,5 @@ urllib3==1.25.8
 Werkzeug==1.0.1
 yfinance==0.1.54
 zipp==3.1.0
+coverage
+gunicorm
