@@ -11,7 +11,7 @@ def valid_time(a):
 
 def pre(delta, r):
 
-    with open('fuck1.txt', 'r') as values:
+    with open('demoResponse.txt', 'r') as values:
         data = eval(values.read())
 
     X = []

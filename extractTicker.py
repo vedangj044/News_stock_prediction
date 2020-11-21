@@ -7,10 +7,13 @@ from datetime import date, timedelta, datetime
 from urllib.request import urlopen
 import json
 import dateutil.relativedelta
+import os
 
 
 class stock_graph():
-
+    """
+    Plotting the graph of stock price vs time, including future prediction
+    """
     def __init__(self, query, regression_output):
         self.regression_output = regression_output
         self.url = "https://www.marketwatch.com/tools/quotes/lookup.asp?siteID=mktw&Lookup={}&Country=all&Type=All".format(query)
@@ -18,6 +21,10 @@ class stock_graph():
         self.current_price()
         self.get_history()
 
+    """
+    User provides the company name, not ticker
+    Extract the ticker name, from marketwatch.com
+    """
     def get_ticker(self):
         self.r = requests.get(self.url)
         self.stock = BeautifulSoup(self.r.content, "html.parser")
@@ -26,6 +33,9 @@ class stock_graph():
             self.ticker = link.text
             break
 
+    """
+    Consuming yfinance api to get stock price history
+    """
     def get_history(self):
         self.one_mon = datetime.now() + dateutil.relativedelta.relativedelta(months=-1)
         self.one_mon = str(self.one_mon)[0:10]
@@ -42,13 +52,20 @@ class stock_graph():
 
         self.tickerDF_converted = pd.DataFrame(self.tickerDF_converted)
 
+    """
+    Get the current stock price from financialmodelingprep.com
+    """
     def current_price(self):
-        self.url_current = "https://financialmodelingprep.com/api/v3/quote/{}".format(self.ticker)
+        key = os.environ["key"]
+        self.url_current = "https://financialmodelingprep.com/api/v3/quote/{0}?apikey={1}".format(self.ticker, key)
         self.response_current = urlopen(self.url_current)
         data = self.response_current.read().decode("utf-8")
         self.current_price_value = json.loads(data)[0]['price']
         self.predict_price()
 
+    """
+    Added the predicated values from the model to the stock-price vs time data.
+    """
     def predict_price(self):
         self.predict_price_value = {'date': [pd.to_datetime('today').date(),
                                             (pd.to_datetime('today')+timedelta(days=1)).date(),
@@ -65,6 +82,9 @@ class stock_graph():
 
         self.predict_price_value = pd.DataFrame(self.predict_price_value)
 
+    """
+    Using Altair to generate graph
+    """
     def graph(self):
         self.final_dataset = self.tickerDF_converted.append(self.predict_price_value)
         base = alt.Chart(self.final_dataset).mark_line().encode(
