@@ -1,6 +1,6 @@
 # News_stock_prediction
 [![codecov](https://codecov.io/gh/vedangj044/News_stock_prediction/branch/master/graph/badge.svg)](https://codecov.io/gh/vedangj044/News_stock_prediction)
-[![Build Status](https://travis-ci.org/vedangj044/News_stock_prediction.svg?branch=master)](https://travis-ci.org/vedangj044/News_stock_prediction)
+[![Build Status](https://travis-ci.com/vedangj044/News_stock_prediction.svg?branch=master)](https://travis-ci.com/vedangj044/News_stock_prediction)
 
 ## Famulus
 
@@ -15,7 +15,7 @@ The sentiment of share market and investment largely depends on the news. Throug
 ![Selection_004](https://user-images.githubusercontent.com/43697446/74592475-d6828700-5047-11ea-8a35-8978980edd6e.png)
 
 ### API
-![demo (2)](https://user-images.githubusercontent.com/43697446/78815906-8b08ab80-79ee-11ea-856e-aa7ec32ef397.jpg)
+![Selection_174](https://user-images.githubusercontent.com/43697446/99871742-f5c7c980-2c02-11eb-9912-32f64927542f.png)
 
 ### [Frontend Repo](https://github.com/vedangj044/News_stock_font_end)
 Please check out the frontend repo [(here)](https://github.com/vedangj044/News_stock_font_end)
