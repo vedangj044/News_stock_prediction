@@ -61,7 +61,7 @@ class stock_graph():
     Get the current stock price from financialmodelingprep.com
     """
     def current_price(self):
-        key = os.environ["key"]
+        key = "aeb9ccb3e78f3a9864269a04447db4e8"
         self.url_current = "https://financialmodelingprep.com/api/v3/quote/{0}?apikey={1}".format(self.ticker, key)
         self.response_current = urlopen(self.url_current)
         data = json.loads(self.response_current.read().decode("utf-8"))
@@ -102,6 +102,10 @@ class stock_graph():
         ).interactive()
         return base.to_dict()
 
-# s = stock_graph('google', [5.093, 0.524, 1.082, 2.355])
+    def graphSocket(self):
+        self.final_dataset.reset_index(inplace=True)
+        return json.dumps(list(self.final_dataset.to_dict(orient="Index").values()), default=str)
+
+# s = stock_graph('tesla', [5.093, 0.524, 1.082, 2.355])
 # print(s.ticker)
-# s.graph()
+# print(s.graphSocket())
