@@ -1,10 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime
+from AltException import InvalidQuery
 
 class scraper():
 
     def __init__(self, keyword: str, limit=10, time_=5):
+
+        assert keyword != ""
 
         if "stocks" not in keyword:
             keyword+=" stocks"
@@ -46,6 +49,8 @@ class scraper():
                 }
                 self.results.append(item)
             self.count+=1
+
+        if self.count == 0: raise InvalidQuery
 
     def get_title(self):
         news = ''

@@ -8,18 +8,21 @@ from urllib.request import urlopen
 import json
 import dateutil.relativedelta
 import os
+from AltException import InvalidTicker
 
 
 class stock_graph():
+
     """
     Plotting the graph of stock price vs time, including future prediction
     """
     def __init__(self, query, regression_output):
         self.regression_output = regression_output
         self.url = "https://www.marketwatch.com/tools/quotes/lookup.asp?siteID=mktw&Lookup={}&Country=all&Type=All".format(query)
+        assert query != ""
         self.get_ticker()
-        self.current_price()
         self.get_history()
+        self.current_price()
 
     """
     User provides the company name, not ticker
@@ -32,6 +35,8 @@ class stock_graph():
         for link in self.stock.find_all('td'):
             self.ticker = link.text
             break
+
+        if not hasattr(self, 'ticker'): raise InvalidTicker
 
     """
     Consuming yfinance api to get stock price history
@@ -59,8 +64,9 @@ class stock_graph():
         key = os.environ["key"]
         self.url_current = "https://financialmodelingprep.com/api/v3/quote/{0}?apikey={1}".format(self.ticker, key)
         self.response_current = urlopen(self.url_current)
-        data = self.response_current.read().decode("utf-8")
-        self.current_price_value = json.loads(data)[0]['price']
+        data = json.loads(self.response_current.read().decode("utf-8"))
+        if len(data) == 0: raise InvalidTicker
+        self.current_price_value = data[0]['price']
         self.predict_price()
 
     """
@@ -81,12 +87,12 @@ class stock_graph():
             self.predict_price_value['price'].append(temp_data)
 
         self.predict_price_value = pd.DataFrame(self.predict_price_value)
+        self.final_dataset = self.tickerDF_converted.append(self.predict_price_value)
 
     """
     Using Altair to generate graph
     """
     def graph(self):
-        self.final_dataset = self.tickerDF_converted.append(self.predict_price_value)
         base = alt.Chart(self.final_dataset).mark_line().encode(
             x='date:T',
             y='price:Q',
@@ -96,6 +102,6 @@ class stock_graph():
         ).interactive()
         return base.to_dict()
 
-# s = stock_graph('infosys', [5.093, 0.524, 1.082, 2.355])
+# s = stock_graph('google', [5.093, 0.524, 1.082, 2.355])
 # print(s.ticker)
-# print(s.graph())
+# s.graph()

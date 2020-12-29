@@ -46,7 +46,13 @@ def sentiment_analyzer():
 
     query = query.replace("%20", " ")
     list_predicted = {}
-    news_score = predict1(query).final_pred
+
+    try:
+        news_score = predict1(query).final_pred
+    except Exception as e:
+        return Response("{'Message': '"+str(e)+ "'}", status=404,
+                        mimetype='application/json')
+
 
     pool = ThreadPool(processes=4)
     inter1 = pool.apply_async(pre, (1, news_score))
@@ -83,9 +89,9 @@ def graph():
     query = query.replace("%20", " ")
     try:
         list_predicted = eval(QueryModel.query.filter_by(query_=query).first().list_predicted)
-
     except Exception as e:
-        return Response("{'message': 'invalid query'}", status=404)
+        return Response("{'Message': 'Invalid query'}", status=404,
+                        mimetype='application/json')
 
     graph_pre = [list_predicted["1"],
                  list_predicted["7"],
@@ -96,7 +102,7 @@ def graph():
         return stock_graph(query,
                            graph_pre).graph()
     except Exception as e:
-        return Response("{'message': 'ticker not found'}", status=404)
+        return Response("{'message': '"+str(e)+"'}", status=404)
 
 
 
@@ -109,7 +115,13 @@ def get_summary():
         return Response("{'Message': 'Send query in get query'}", status=404,
                         mimetype='application/json')
     query = query.replace("%20", " ")
-    news = scraper(query).get_title()
+
+    try:
+        news = scraper(query).get_title()
+    except Exception as e:
+        return Response("{'Message': '"+str(e)+"'}", status=404,
+                        mimetype='application/json')
+
     pointers = 3
     return jsonify(Summarize(news, pointers).generate_summary())
 

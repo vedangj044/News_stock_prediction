@@ -6,7 +6,7 @@ flask-cors
 sklearn
 networkx
 pandas
-numpy
+numpy>=1.16.5
 matplotlib
 seaborn
 yfinance
