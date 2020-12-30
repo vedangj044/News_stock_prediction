@@ -1,4 +1,5 @@
 # News_stock_prediction
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8a54e1c4e50641f7924a1b6d10e16cab)](https://app.codacy.com/gh/vedangj044/News_stock_prediction?utm_source=github.com&utm_medium=referral&utm_content=vedangj044/News_stock_prediction&utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/vedangj044/News_stock_prediction/branch/master/graph/badge.svg)](https://codecov.io/gh/vedangj044/News_stock_prediction)
 [![Build Status](https://travis-ci.com/vedangj044/News_stock_prediction.svg?branch=master)](https://travis-ci.com/vedangj044/News_stock_prediction)
 
