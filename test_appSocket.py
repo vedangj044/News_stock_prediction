@@ -1,27 +1,26 @@
 import unittest
 from fastapi.testclient import TestClient
-from fastapi.websockets import WebSocket
 from appWebSocket import app
 
 class socketCases(unittest.TestCase):
 
     def test_emptyQuery(self):
-        client = TestClient(app)
-        with client.websocket_connect("/ws") as ws:
+        self.client = TestClient(app)
+        with self.client.websocket_connect("/ws") as ws:
             ws.send_text("")
             data = ws.receive_json()
             assert 'Invalid query' in data['message']
 
     def test_invalidQuery(self):
-        client = TestClient(app)
-        with client.websocket_connect("/ws") as ws:
+        self.client = TestClient(app)
+        with self.client.websocket_connect("/ws") as ws:
             ws.send_text("case;';';';';'eenadue'")
             data = ws.receive_json()
             assert 'Google' in data['message']
 
     def test_invalidTicker(self):
-        client = TestClient(app)
-        with client.websocket_connect("/ws") as ws:
+        self.client = TestClient(app)
+        with self.client.websocket_connect("/ws") as ws:
             ws.send_text("google")
             data = ws.receive_json()
             assert 'brand' in data['message']

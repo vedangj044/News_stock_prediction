@@ -6,7 +6,8 @@ from AltException import InvalidQuery
 class scraper():
 
     def __init__(self, keyword: str, limit=10, time_=5):
-
+        """ returns the scraped news headlines from google news. """
+        
         assert keyword != ""
 
         if "stocks" not in keyword:

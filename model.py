@@ -8,10 +8,10 @@ import random
 import pickle
 
 class Sentiment:
-    """
-    This class trains the data on 10000 tweets
-    """
+
     def __init__(self):
+        """ This class trains the data on 10000 tweets """
+
         self.stop_words = stopwords.words('english')
         self.positive_cleaned_tokens_list = []
         self.negative_cleaned_tokens_list = []

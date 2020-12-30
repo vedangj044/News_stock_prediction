@@ -4,7 +4,9 @@ import numpy as np
 import networkx as nx
 
 class Summarize:
+
     def __init__(self, text, top_n):
+        """ Get the summary of the text of news scraped """
         self.text = text
         self.top_n = top_n
 
@@ -18,7 +20,8 @@ class Summarize:
 
         return sentences
 
-    def sentence_similarity(self, sent1, sent2, stopwords=[]):
+    @staticmethod
+    def sentence_similarity(sent1, sent2, stopwords):
 
         sent1 = [w.lower() for w in sent1]
         sent2 = [w.lower() for w in sent2]
@@ -46,8 +49,8 @@ class Summarize:
         # Create an empty similarity matrix
         similarity_matrix = np.zeros((len(sentences), len(sentences)))
 
-        for idx1 in range(len(sentences)):
-            for idx2 in range(len(sentences)):
+        for idx1, _ in enumerate(sentences):
+            for idx2, _ in enumerate(sentences):
                 if idx1 == idx2: #ignore if both are same sentences
                     continue
                 # print(sentences[idx1], sentences[idx2], stop_words)

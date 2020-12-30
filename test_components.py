@@ -1,6 +1,5 @@
 import unittest
 from predictor import predict1
-import pandas as pd
 from model import Sentiment
 from nltk import NaiveBayesClassifier
 from extractTicker import stock_graph

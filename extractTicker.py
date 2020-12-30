@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 import yfinance as yf
 import altair as alt
 import pandas as pd
-from datetime import date, timedelta, datetime
-from urllib.request import urlopen
+from datetime import timedelta, datetime
+import urllib.request
 import json
 import dateutil.relativedelta
 import os
@@ -13,10 +13,13 @@ from AltException import InvalidTicker
 
 class stock_graph():
 
-    """
-    Plotting the graph of stock price vs time, including future prediction
-    """
     def __init__(self, query, regression_output):
+        """ Summary of the class here
+
+        query: the name of the brand
+        regression_output: list of 4 elements having the predicted change in
+        the price values
+        """
         self.regression_output = regression_output
         self.url = "https://www.marketwatch.com/tools/quotes/lookup.asp?siteID=mktw&Lookup={}&Country=all&Type=All".format(query)
         assert query != ""
@@ -24,11 +27,12 @@ class stock_graph():
         self.get_history()
         self.current_price()
 
-    """
-    User provides the company name, not ticker
-    Extract the ticker name, from marketwatch.com
-    """
     def get_ticker(self):
+        """
+        User provides the company name, not ticker
+        Extract the ticker name, from marketwatch.com
+        """
+
         self.r = requests.get(self.url)
         self.stock = BeautifulSoup(self.r.content, "html.parser")
 
@@ -38,10 +42,10 @@ class stock_graph():
 
         if not hasattr(self, 'ticker'): raise InvalidTicker
 
-    """
-    Consuming yfinance api to get stock price history
-    """
+
     def get_history(self):
+        """ Consuming yfinance api to get stock price history """
+
         self.one_mon = datetime.now() + dateutil.relativedelta.relativedelta(months=-1)
         self.one_mon = str(self.one_mon)[0:10]
         self.tickerDF = yf.Ticker(self.ticker).history(period='1d', start=self.one_mon)
@@ -57,22 +61,22 @@ class stock_graph():
 
         self.tickerDF_converted = pd.DataFrame(self.tickerDF_converted)
 
-    """
-    Get the current stock price from financialmodelingprep.com
-    """
     def current_price(self):
-        key = "aeb9ccb3e78f3a9864269a04447db4e8"
-        self.url_current = "https://financialmodelingprep.com/api/v3/quote/{0}?apikey={1}".format(self.ticker, key)
-        self.response_current = urlopen(self.url_current)
-        data = json.loads(self.response_current.read().decode("utf-8"))
-        if len(data) == 0: raise InvalidTicker
-        self.current_price_value = data[0]['price']
-        self.predict_price()
+        """ Get the current stock price from financialmodelingprep.com """
 
-    """
-    Added the predicated values from the model to the stock-price vs time data.
-    """
+        key = "aeb9ccb3e78f3a9864269a04447db4e8"
+        # key = os.environ["key"]
+        self.url_current = "https://financialmodelingprep.com/api/v3/quote/{0}?apikey={1}".format(self.ticker, key)
+        req = urllib.request.Request(self.url_current)
+        with urllib.request.urlopen(req) as response:
+            self.response_current = response
+            data = json.loads(self.response_current.read().decode("utf-8"))
+            if len(data) == 0: raise InvalidTicker
+            self.current_price_value = data[0]['price']
+            self.predict_price()
+
     def predict_price(self):
+        """ Added the predicated values from the model to the stock-price vs time data. """
         self.predict_price_value = {'date': [pd.to_datetime('today').date(),
                                             (pd.to_datetime('today')+timedelta(days=1)).date(),
                                             (pd.to_datetime('today')+timedelta(days=7)).date(),
@@ -89,10 +93,9 @@ class stock_graph():
         self.predict_price_value = pd.DataFrame(self.predict_price_value)
         self.final_dataset = self.tickerDF_converted.append(self.predict_price_value)
 
-    """
-    Using Altair to generate graph
-    """
     def graph(self):
+        """ Using Altair to generate graph """
+
         base = alt.Chart(self.final_dataset).mark_line().encode(
             x='date:T',
             y='price:Q',
@@ -103,6 +106,8 @@ class stock_graph():
         return base.to_dict()
 
     def graphSocket(self):
+        """ Return dictionary to generate graph on the client side """
+
         self.final_dataset.reset_index(inplace=True)
         return json.dumps(list(self.final_dataset.to_dict(orient="Index").values()), default=str)
 

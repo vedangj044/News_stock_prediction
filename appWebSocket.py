@@ -1,9 +1,7 @@
 from fastapi import FastAPI, WebSocket
-from fastapi.responses import JSONResponse
-from app_helper import pre, valid_time
+from app_helper import pre
 from predictor import predict1
 from multiprocessing.pool import ThreadPool
-import json
 from news_scraper import scraper
 from summarize import Summarize
 from extractTicker import stock_graph

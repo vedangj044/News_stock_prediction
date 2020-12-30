@@ -1,10 +1,11 @@
 from classifier import Classify
 from news_scraper import scraper
-from sklearn.model_selection import train_test_split
 
 class predict1():
 
     def __init__(self, keyword, scraperResults=None):
+        """ Calls the scraper and returns the sentiment
+        score of the news headlines. """
         self.score = 0
         self.articles = 0
         assert keyword != ""

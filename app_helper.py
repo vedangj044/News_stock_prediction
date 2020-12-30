@@ -1,18 +1,19 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import datetime
+import ast
 
 def valid_time(a):
     delta = datetime.datetime.now() - a
-    min = delta.total_seconds()/60
-    if min >= 5:
+    mini = delta.total_seconds()/60
+    if mini >= 5:
         return False # pragma: no cover
     return True
 
 def pre(delta, r):
 
     with open('demoResponse.txt', 'r') as values:
-        data = eval(values.read())
+        data = ast.literal_eval(values.read())
 
     X = []
     Y = []
@@ -22,7 +23,7 @@ def pre(delta, r):
         # triggered only when news articles are negative
         pos = True # pragma: no cover
 
-    for i in range(len(data)):
+    for i, _ in enumerate(data):
         if pos and data[i][0] >= 0.5:
             X.append(round(data[i][0], 5)) # pragma: no cover
         else:

@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, Response
-from flask_cors import *
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from summarize import Summarize
 from predictor import predict1
 import json
+import ast
 import datetime
 from multiprocessing.pool import ThreadPool
 from extractTicker import stock_graph
@@ -14,7 +15,6 @@ from app_helper import pre, valid_time
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.sqlite3'
-app.config['SECRET_KEY'] = "THIS IS SECRET"
 app.config.from_object(__name__)
 db = SQLAlchemy(app)
 
@@ -30,9 +30,8 @@ class QueryModel(db.Model):
 
 @app.route('/news', methods=['GET'])
 def sentiment_analyzer():
-    '''
-    Returns the change in value in interval of days.
-    '''
+    ''' Returns the change in value in interval of days. '''
+
     query = request.args.get('query', type=str)
 
     if query is None:
@@ -42,7 +41,7 @@ def sentiment_analyzer():
     item = QueryModel.query.filter_by(query_=query).first()
     if item is not None:
         if valid_time(item.time):
-            return json.dumps({"predict": eval(item.list_predicted)})
+            return json.dumps({"predict": ast.literal_eval(item.list_predicted)})
 
     query = query.replace("%20", " ")
     list_predicted = {}
@@ -88,9 +87,9 @@ def graph():
 
     query = query.replace("%20", " ")
     try:
-        list_predicted = eval(QueryModel.query.filter_by(query_=query).first().list_predicted)
+        list_predicted = ast.literal_eval(QueryModel.query.filter_by(query_=query).first().list_predicted)
     except Exception as e:
-        return Response("{'Message': 'Invalid query'}", status=404,
+        return Response("{'Message': 'Invalid query: "+str(e)+"'}", status=404,
                         mimetype='application/json')
 
     graph_pre = [list_predicted["1"],
@@ -128,4 +127,4 @@ def get_summary():
 
 if __name__ == '__main__':
     db.create_all() # pragma: no cover
-    app.run(debug=True) # pragma: no cover
+    app.run() # pragma: no cover
