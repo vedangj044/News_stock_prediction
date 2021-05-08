@@ -71,7 +71,12 @@ def sentiment_analyzer():
 
     item.list_predicted = str(list_predicted)
     item.news_score = news_score
-    db.session.commit()
+
+    # Try-catch to resolve integrity error
+    try:
+        db.session.commit()
+    except:
+        print("[ERROR]: Company query already exists!")
 
     return json.dumps({"predict": list_predicted})
 
@@ -113,7 +118,7 @@ def get_summary():
     if query is None:
         return Response("{'Message': 'Send query in get query'}", status=404,
                         mimetype='application/json')
-    query = query.replace("%20", " ")
+    query = query.replace("%20", " ") # Whitespace url resolve
 
     try:
         news = scraper(query).get_title()
