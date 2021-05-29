@@ -32,16 +32,16 @@ def pre(delta, r):
     X = np.array(X).reshape(-1, 1)
 
     if delta == 1:
-        for i in range(len(data)):
+        for i, _ in enumerate(data):
             Y.append(round(data[i][1], 5))
     elif delta == 7:
-        for i in range(len(data)):
+        for i, _ in enumerate(data):
             Y.append(round(data[i][2], 5))
     elif delta == 15:
-        for i in range(len(data)):
+        for i, _ in enumerate(data):
             Y.append(round(data[i][3], 5))
     elif delta == 30:
-        for i in range(len(data)):
+        for i, _ in enumerate(data):
             Y.append(round(data[i][4], 5))
     reg = LinearRegression()
     classi = reg.fit(X, Y)

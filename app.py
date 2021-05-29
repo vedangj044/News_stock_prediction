@@ -31,8 +31,7 @@ class QueryModel(db.Model):
 
 @app.route('/news', methods=['GET'])
 def sentiment_analyzer():
-    ''' Returns the change in value in interval of days. '''
-
+    """Returns the change in value in interval of days."""
     query = request.args.get('query', type=str)
 
     if query is None:
@@ -130,5 +129,5 @@ def get_summary():
 
 
 if __name__ == '__main__':
-    db.create_all() # pragma: no cover
-    app.run()       # pragma: no cover
+    db.create_all()                                 # pragma: no cover
+    app.run(debug=True, use_reloader=False)         # pragma: no cover

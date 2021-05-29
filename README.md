@@ -28,5 +28,5 @@ Also read about the project on our blog [(here)](https://vedangj044.github.io/bl
 Note:
 Env variable to specify while using docker are
 
-- `key=<key_from_financialmodelingprep.com>`
-- `SQLALCHEMY=<database_url>`
+-  `key=<key_from_financialmodelingprep.com>`
+-  `SQLALCHEMY=<database_url>`

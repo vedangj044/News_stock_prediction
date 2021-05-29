@@ -10,8 +10,7 @@ import pickle
 class Sentiment:
 
     def __init__(self):
-        """ This class trains the data on 10000 tweets """
-
+        """This class trains the data on 10000 tweets."""
         self.stop_words = stopwords.words('english')
         self.positive_cleaned_tokens_list = []
         self.negative_cleaned_tokens_list = []
@@ -44,7 +43,8 @@ class Sentiment:
         return cleaned_tokens
 
 
-    def get_tweet_for_model(self, cleaned_tokens_list):
+    @staticmethod
+    def get_tweet_for_model(cleaned_tokens_list):
         for tweet_tokens in cleaned_tokens_list:
             yield dict([token, True] for token in tweet_tokens)
 

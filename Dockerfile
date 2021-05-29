@@ -1,14 +1,14 @@
-FROM ubuntu
+FROM ubuntu:18.04
 
 ENV PYTHONUNBUFFERED 1
 
-ADD . .
+COPY . .
 
 RUN apt update
 
 RUN apt install -y python3 python3-pip
 
-RUN pip install -r requirements.txt
+RUN python3 -m pip install -r requirements.txt
 
 RUN python3 download.py
 

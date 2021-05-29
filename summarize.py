@@ -6,7 +6,7 @@ import networkx as nx
 class Summarize:
 
     def __init__(self, text, top_n):
-        """ Get the summary of the text of news scraped """
+        """Get the summary of the text of news scraped."""
         self.text = text
         self.top_n = top_n
 

@@ -4,8 +4,7 @@ from news_scraper import scraper
 class predict1():
 
     def __init__(self, keyword, scraperResults=None):
-        """ Calls the scraper and returns the sentiment
-        score of the news headlines. """
+        """Calls the scraper and returns the sentiment score of the news headlines."""
         self.score = 0
         self.articles = 0
         assert keyword != ""
