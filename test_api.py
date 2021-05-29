@@ -60,5 +60,5 @@ class endpointsCase(unittest.TestCase):
             self.fail(msg="Response format is invalid: " + str(e))      # pragma: no cover
 
     def test_invalid_ticker(self):
-        self.assertEqual(self.app.get("/news?query=google").status_code, 200)
-        self.assertEqual(self.app.get("/stock-graph?query=guocoland").status_code, 404)
+        self.assertEqual(self.app.get("/news?query=narendramodi").status_code, 200)
+        self.assertEqual(self.app.get("/stock-graph?query=narendramodi").status_code, 404)

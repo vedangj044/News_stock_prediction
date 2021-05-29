@@ -101,6 +101,7 @@ def graph():
         return stock_graph(query,
                            graph_pre).graph()
     except Exception as e:
+        print(e)
         return Response("{'message': '"+str(e)+"'}", status=404)
 
 
