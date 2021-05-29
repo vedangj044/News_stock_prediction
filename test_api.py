@@ -1,6 +1,7 @@
 import unittest
 from app import db, app
 import json
+import time
 
 class endpointsCase(unittest.TestCase):
 
@@ -62,3 +63,8 @@ class endpointsCase(unittest.TestCase):
     def test_invalid_ticker(self):
         self.assertEqual(self.app.get("/news?query=narendramodi").status_code, 200)
         self.assertEqual(self.app.get("/stock-graph?query=narendramodi").status_code, 404)
+
+    def test_timeout_query(self):
+        self.assertEqual(self.app.get("/news?query=tesla").status_code, 200)
+        time.sleep(6*60)
+        self.assertEqual(self.app.get("/news?query=tesla").status_code, 200)

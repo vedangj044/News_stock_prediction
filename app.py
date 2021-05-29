@@ -42,6 +42,8 @@ def sentiment_analyzer():
     if item is not None:
         if valid_time(item.time):
             return json.dumps({"predict": ast.literal_eval(item.list_predicted)})
+        else:
+            db.session.delete(item)
 
     query = query.replace("%20", " ")
     list_predicted = {}
@@ -127,5 +129,5 @@ def get_summary():
 
 
 if __name__ == '__main__':
-    db.create_all() # pragma: no cover
+    # db.create_all() # pragma: no cover
     app.run() # pragma: no cover
