@@ -6,6 +6,7 @@ from predictor import predict1
 import json
 import ast
 import datetime
+import os
 from multiprocessing.pool import ThreadPool
 from extractTicker import stock_graph
 from news_scraper import scraper
@@ -14,7 +15,7 @@ from app_helper import pre, valid_time
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY']
 app.config.from_object(__name__)
 db = SQLAlchemy(app)
 
@@ -129,5 +130,5 @@ def get_summary():
 
 
 if __name__ == '__main__':
-    # db.create_all() # pragma: no cover
-    app.run() # pragma: no cover
+    db.create_all() # pragma: no cover
+    app.run()       # pragma: no cover

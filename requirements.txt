@@ -16,3 +16,5 @@ codecov
 flask-sqlalchemy
 fastapi
 uvicorn
+pymysql
+uWSGI

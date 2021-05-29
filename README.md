@@ -21,4 +21,12 @@ The sentiment of share market and investment largely depends on the news. Throug
 ### [Frontend Repo](https://github.com/vedangj044/News_stock_font_end)
 Please check out the frontend repo [(here)](https://github.com/vedangj044/News_stock_font_end)
 
+Also read about the project on our blog [(here)](https://vedangj044.github.io/blog/famulus/)
+
 ![Famulus](https://user-images.githubusercontent.com/43697446/99801280-c611b680-2b5b-11eb-880a-67da7cd697ee.jpg)
+
+Note:
+Env variable to specify while using docker are
+
+- `key=<key_from_financialmodelingprep.com>`
+- `SQLALCHEMY=<database_url>`
