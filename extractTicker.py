@@ -64,8 +64,7 @@ class stock_graph():
     def current_price(self):
         """ Get the current stock price from financialmodelingprep.com """
 
-        key = "aeb9ccb3e78f3a9864269a04447db4e8"
-        # key = os.environ["key"]
+        key = os.environ["key"]
         self.url_current = "https://financialmodelingprep.com/api/v3/quote/{0}?apikey={1}".format(self.ticker, key)
         req = urllib.request.Request(self.url_current)
         with urllib.request.urlopen(req) as response:

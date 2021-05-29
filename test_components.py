@@ -64,7 +64,7 @@ class extractTicketTestCase(unittest.TestCase):
         self.assertRaises(AssertionError, lambda: stock_graph("", []))
 
     def test_invalid_graph(self):
-        self.assertRaises(InvalidTicker, lambda: stock_graph("asdajkefnae",
+        self.assertRaises(InvalidTicker, lambda: stock_graph("guocoland",
         [0.08733508525853388,
         0.41467300402115265,
         0.8421720201029591,

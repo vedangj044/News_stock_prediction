@@ -56,9 +56,9 @@ class endpointsCase(unittest.TestCase):
     def test_response_object(self):
         try:
             self.checkResponse(json.loads(self.app.get("/news?query=Tesla").data))
-        except Exception as e: # pragma: no cover
-            self.fail(msg="Response format is invalid: " + str(e)) # pragma: no cover
+        except Exception as e:                                          # pragma: no cover
+            self.fail(msg="Response format is invalid: " + str(e))      # pragma: no cover
 
     def test_invalid_ticker(self):
         self.assertEqual(self.app.get("/news?query=google").status_code, 200)
-        self.assertEqual(self.app.get("/stock-graph?query=google").status_code, 404)
+        self.assertEqual(self.app.get("/stock-graph?query=guocoland").status_code, 404)
